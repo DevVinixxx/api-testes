@@ -29,11 +29,16 @@ class ArtigoController extends Controller
     public function store(Request $request)
     {
         $artigo = new Artigo;
-        $artigo->titulo = $request->input('titulo');
-        $artigo->conteudo = $request->intup('conteudo');
+        $artigo->titulo = $request->titulo;
+        $artigo->conteudo = $request->conteudo;
 
         if( $artigo->save() ){
-            return new ResourcesArtigo( $artigo );
+            return response()->json([
+                "message"=>"sucesso ao salvar"
+            ]);
+        } else{ return response()->json([
+            "message"=>"erro ao salvar"
+        ]);
         }
     }
 
@@ -59,12 +64,18 @@ class ArtigoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $artigo = Artigo::findOrFail( Request->id);
+        $artigo = Artigo::findOrFail($request->id);
         $artigo->titulo = $request->input('titulo');
         $artigo->conteudo = $request->input('conteudo');
 
         if ($artigo->save()) {
-            return new ResourcesArtigo( $artigo );
+            return response()->json([
+                "MESSAGE"=>"DEU BOM"
+            ]);
+        } else{
+            return response()->json([
+                "MESSAGE"=>"DEU RUIM"
+            ]);
         }
     }
 
@@ -76,9 +87,28 @@ class ArtigoController extends Controller
      */
     public function destroy($id)
     {
-        $artigo = Artigo::findOrFail($id);
-        if ($artigo->delete()) {
-            return new ResourcesArtigo( $artigo );
-        }
+
+        //$artigo->destroy();
+
+        //if($artigo->delete()){
+          //  return response()->json([
+            //    "message"=>"artigo deletado"
+            //]);
+        //} else{
+          //  return response()->json([
+            //    "message"=>"artigo nao deletado"
+            //]);
+        //}
+
+
+        $artigo = Artigo::find($id);
+        
+        if($artigo->delete())
+        return response()->json([
+          "message" => "Artigo Deletado"]);
+        //$artigo = Artigo::findOrFail($id);
+        //if ($artigo->delete()) {
+         //   return new ResourcesArtigo( $artigo );
+        //}
     }
 }
